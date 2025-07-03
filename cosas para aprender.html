@@ -1,0 +1,51 @@
+
+IMAGEN CSS
+
+🖼️ 📏 Tamaño y ajuste
+
+width: 300px;        /* Ancho fijo */
+height: 200px;       /* Alto fijo */
+max-width: 100%;     /* No excede el ancho del contenedor */
+max-height: 100vh;   /* No excede la altura de la pantalla */
+object-fit: cover;   /* Ajuste de contenido: cover, contain, fill, none */
+aspect-ratio: 16/9;  /* Proporción de aspecto */
+
+
+📐 Posicionamiento
+
+display: block;             /* Para quitar espacios inferiores */
+margin: auto;               /* Centrar horizontalmente */
+position: relative;         /* Para posicionar con top, left, etc */
+top: 10px;
+left: 20px;
+z-index: 1;                 /* Control de profundidad */
+
+🖌️ Estética y bordes
+
+border: 2px solid black;     /* Borde negro de 2px */
+border-radius: 10px;         /* Bordes redondeados */
+box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra */
+filter: grayscale(100%);     /* Blanco y negro */
+filter: blur(5px);           /* Desenfoque */
+opacity: 0.8;                /* Opacidad */
+🧭 Alineación y espaciado
+
+margin-top: 20px;
+margin-bottom: 10px;
+padding: 5px;
+
+🎞️ Transformaciones y animaciones
+
+transform: scale(1.1);             /* Escala */
+transform: rotate(10deg);          /* Rotación */
+transition: all 0.3s ease-in-out;  /* Transición suave al pasar el mouse */
+👆 Efectos al pasar el mouse (hover)
+
+img:hover {
+  transform: scale(1.05);          /* Zoom al pasar el mouse */
+  filter: brightness(1.2);         /* Más brillo */
+  cursor: pointer;                 /* Cambia el cursor */
+}
+
+
+
