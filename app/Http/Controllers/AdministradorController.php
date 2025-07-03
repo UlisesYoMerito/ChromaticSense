@@ -91,7 +91,7 @@ class AdministradorController extends Controller
         DB::transaction( function() use ($request){
             $ruta = Storage::disk('public')->putFile('portadas',$request->file('portada'));
             $articulo = Articulo::firstOrNew(["id" => $request->get('id')]);
-            $articulo->titulo = $request->get('titulo');
+            $articulo->titulo = $request->get('titulo');  
             $articulo->portada = "/$ruta";
             $articulo->descripcion = $request->get('descripcion');
             $articulo->contenido = $request->get('contenido');
