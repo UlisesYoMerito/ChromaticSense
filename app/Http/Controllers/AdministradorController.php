@@ -88,8 +88,8 @@ class AdministradorController extends Controller
 
     public function articulosRegistrar(Request $request){
         
-        DB::transaction( function() use ($request){
-            $ruta = Storage::disk('public')->putFile('portadas',$request->file('portada'));
+        $ruta = Storage::disk('public')->putFile('portadas',$request->file('portadas'));
+        DB::transaction( function() use ($request, $ruta){
             $articulo = Articulo::firstOrNew(["id" => $request->get('id')]);
             $articulo->titulo = $request->get('titulo');  
             $articulo->portada = "/$ruta";

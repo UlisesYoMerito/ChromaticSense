@@ -20,6 +20,7 @@
         "datatables.net-bs5": "^2.3.2",
         "datatables.net-dt": "^2.3.2",
         "jquery": "^3.7.1",
+        "jQuery": "^1.7.4",
         "sweetalert2": "^11.22.2"
     }
 }

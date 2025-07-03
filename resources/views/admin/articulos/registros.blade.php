@@ -7,54 +7,66 @@
 @section("contenido")
 
 
-<div class="container-fluid my-5">
+<div class="container my-5">
 
     <h1 class="display-4 fw-bold">📃 Artículos</h1>
-    <div class="text-end mb-4">
-        <a href="{{ route('admin.articuloFormulario') }}" class="btn btn-warning btn-lg">Nuevo formulario</a>
+    <div class="text-end mb-2">
+        <a href="{{ route('admin.articuloFormulario') }}" class="btn btn-warning btn-md">Nuevo formulario</a>
     </div>
-    <table  class="table datatable table-bordered table-sm">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Fecha de creación</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($registros as $r)
-            <tr>
-                <td>{{ $r->titulo }}</td>
-                <td>{{ $r->descripcion }}</td>
-                <td>{{ $r->created_at ?? "Sin fecha" }}</td>
-                <td>
-                    <a class="" href="{{ route('admin.articuloFormulario', ["id" => $r->id]) }}">✏️ Editar</a>
-                    <form class="preguntar" method="POST" action="{{route('admin.articuloEliminar')}} ">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="id" value="{{ $r?->id }}">
-                        <button type="button" class=" btn btn-sm bg-danger">Eliminar</button>
-                    </form>
 
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="tabla-articulos">
+        <table class=" justify-cottent-center table datatable table-bordered table-sm table-hover">
+            <thead>
+                <tr>
+                    <th style="width: 10%">Título</th>
+                    <th style="width: 10%">Portada</th>
+                    <th style="width: 50%">Descripción</th>
+                    <th style="width: 15%">Fecha de creación</th>
+                    <th style="width: 15%">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($registros as $r)
+                <tr>
+                    <td>{{ $r->titulo }}</td>
+                    <td>
+                        @if(Str::startsWith($r->portada, ['http://', 'https://']))
+                            <img class="d-block mx-auto rounded" src="{{ $r->portada }}" alt="Portada" style="max-width: 80px; max-height: 80px;">
+                        @else
+                            <img class="d-block mx-auto rounded" src="{{ asset('storage/' . $r->portada) }}" alt="Portada" style="max-width: 80px; max-height: 80px;">
+                        @endif
+                    </td>
+                    <td>{{ $r->descripcion }}</td>
+                    <td>{{ $r->created_at ?? "Sin fecha" }}</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-4">
+                            <a class="ms-2 btn btn-sm bg-primary text-light " href="{{ route('admin.articuloFormulario', ["id" => $r->id]) }}">✏️ Editar</a>
+                            <form class="preguntar" method="POST" action="{{route('admin.articuloEliminar')}}">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{ $r?->id }}">
+                                <button type="button" class="btn btn-sm bg-dark text-danger fw-bold"> ⛔Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @endsection
 
 @section('js')
-    <script>
-        for (const nodo of document.querySelectorAll(".preguntar button")) {
-            nodo.addEventListener("click", function(){
-                let pregunta = confirm("Seguro de eliminar?")
-                if(pregunta){
-                    nodo.parentNode.submit();
-                }
-            })
-            
-        }
-    </script>
+<script>
+    for (const nodo of document.querySelectorAll(".preguntar button")) {
+        nodo.addEventListener("click", function() {
+            let pregunta = confirm("Seguro de eliminar?")
+            if (pregunta) {
+                nodo.parentNode.submit();
+            }
+        })
+
+    }
+</script>
 @endsection

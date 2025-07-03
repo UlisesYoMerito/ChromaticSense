@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <label for="portada" class="text-dark">URL de la portada</label>
-                    <input type="file" class="form-control" accept=".jpg, .png, " name="portada" id="portada" //required  value="{{ $articulo?->portada }}">
+                    <input type="file" class="form-control" accept=".jpg, .png, " name="portadas" id="portada" //required  value="{{ $articulo?->portada }}">
                 </div>
             </div>
             <br>
