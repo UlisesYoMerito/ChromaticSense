@@ -65,9 +65,10 @@ class SitioController extends Controller
         */
 
     public function busqueda(){
+
+            
         return view('busqueda', [
-            "nombre_personaje" => "La campeona de los precios bajos",
-            "imagen_personaje" => "https://i.pinimg.com/736x/ac/b5/de/acb5de161d451113a6ed182bf5c5e2f1.jpg",
+            "buscandoAndo"=> Articulo::where('titulo', 'like', '%'.request('busqueda').'%')->paginate(2)
         ]);
     }
 

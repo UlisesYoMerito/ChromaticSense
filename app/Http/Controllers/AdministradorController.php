@@ -17,42 +17,47 @@ use Illuminate\Support\Facades\Storage;
 
 class AdministradorController extends Controller
 {
-    
-    public function iniciarSesion(){
+    public function iniciarSesion()
+    {
         return view('admin.login');
     }
-
-    public function entrar(Request $request){
-
-        if(     Auth::attempt(["email" => $request->get('correo'), "password" => $request->get('contrasena')])  ){
-            alert()->success('Bienvenido','Has iniciado sesión');
+    public function entrar(Request $request)
+    {
+        if (Auth::attempt(["email" => $request->get('correo'), "password" => $request->get('contrasena')])) {
+            alert()->success('Bienvenido', 'Has iniciado sesión');
             return redirect()->route("sitio.home");
-        }else{
-            alert()->error('Algo ha salido mal','Tus datos de acceso no coinciden');
+        } else {
+            alert()->error('Algo ha salido mal', 'Tus datos de acceso no coinciden');
             return redirect()->route("admin.login");
         }
-
     }
-    
-    public function cerrarSesion(){
+    public function cerrarSesion()
+    {
         Auth::logout();
         Session::invalidate();
         Session::regenerateToken();
         return redirect()->route("sitio.home");
     }
 
-    public function registro(){
+    public function registro()
+    {
         return view('admin.registro');
     }
+    public function registrar(Request $request)
+    {
 
-    public function registrar(Request $request){
+        $request->validate(
+            [
+                'nombre' => 'required|string|max:20',
+                'correo' => 'required|email|unique:usuarios,email',
+                'g-recaptcha-response' => 'required|captcha',
+            ],
+            [
+                'g-recaptcha-response.required' => 'Debes completar el captcha',
+            ]
+        );
 
-        $request->validate([
-            'nombre' => 'required|string|max:20',
-            'correo' => 'required|email|unique:usuarios,email',
-        ]);
-
-        $contra = round(1000,9999);
+        $contra = round(1000, 9999);
         $usuario = new User;
         $usuario->nombre = $request->get("nombre");
         $usuario->email = $request->get('correo');
@@ -60,82 +65,115 @@ class AdministradorController extends Controller
         $usuario->save();
 
         Mail::to($request->get('correo'))
-            ->send( new NotificacionesRegistro($request->get('correo'), $contra) );
+            ->send(new NotificacionesRegistro($request->get('correo'), $contra));
 
         Auth::loginUsingId($usuario->id);
         return redirect()->route("sitio.home");
     }
 
-    public function inicio(){
+    public function inicio()
+    {
         return view('admin.inicio', [
             "articulos" => Articulo::count(),
             "etiquetas" => Etiqueta::count()
         ]);
     }
 
-
-    public function articulosRegistros(){
+    public function articulosRegistros()
+    {
         return view("admin.articulos.registros", [
             "registros" => Articulo::all()
         ]);
     }
-    public function articulosFormulario($id = null){
+
+
+    public function etiquetasRegistros()
+    {
+        return view("admin.etiquetas.registros", [
+            "registrosEtiquetas" => Etiqueta::all()
+        ]);
+    }
+
+    public function articulosFormulario($id = null)
+    {
         return view("admin.articulos.formulario", [
             "etiquetas" => Etiqueta::all(),
             "articulo" => Articulo::with("etiquetas")->find($id)
         ]);
     }
 
-    public function articulosRegistrar(Request $request){
-        
-        $ruta = Storage::disk('public')->putFile('portadas',$request->file('portadas'));
-        DB::transaction( function() use ($request, $ruta){
+
+
+
+    public function etiquetasFormulario($id = null)
+    {
+        return view("admin.etiquetas.formulario", [
+            "etiqueta" => Etiqueta::find($id)
+        ]);
+    }
+    public function articulosRegistrar(Request $request)
+    {
+        DB::transaction(function () use ($request) {
+            $ruta = Storage::disk('public')->putFile('portadas', $request->file('portada'));
             $articulo = Articulo::firstOrNew(["id" => $request->get('id')]);
-            $articulo->titulo = $request->get('titulo');  
+            $articulo->titulo = $request->get('titulo');
             $articulo->portada = "/$ruta";
             $articulo->descripcion = $request->get('descripcion');
             $articulo->contenido = $request->get('contenido');
             $articulo->fecha_visualizacion = $request->get('fecha');
             $articulo->usuario_id = Auth::id();
             $articulo->save();
-
-
             // Eliminar etiquetas antiguas
-            ArticuloEtiqueta::where('articulo_id',$articulo-> id)
+            ArticuloEtiqueta::where('articulo_id', $articulo->id)
                 ->whereNotIn('etiqueta_id', $request->get('etiqueta'))
                 ->delete();
-
-
-
             foreach ($request->get('etiqueta') as $e) {
                 $etiqueta = ArticuloEtiqueta::firstOrNew([
                     'articulo_id' => $articulo->id,
                     'etiqueta_id' => $e
-
                 ]);
                 $etiqueta->articulo_id = $articulo->id;
                 $etiqueta->etiqueta_id = $e;
                 $etiqueta->save();
             }
         });
+        return redirect()->route('admin.articuloRegistros');
+    }
+
+    public function etiquetasRegistrar(Request $request) {
+        DB::transaction(function () use ($request) {
+            $etiqueta = Etiqueta::firstOrNew(["id" => $request->get('id')]);
+            $etiqueta->nombre = $request->get('nombre');
+            $etiqueta->save();
+        });
+        return redirect()->route('admin.etiquetasRegistros');
+    }
+
+
+
+
+    public function articulosEliminar(Request $request)
+    {
+        DB::transaction(function () use ($request) {
+            ArticuloEtiqueta::where('articulo_id', $request->get('id'))->delete();
+
+            $articulo = Articulo::find($request->get('id'));
+            if ($articulo) {
+                $articulo->delete();
+            }
+        });
 
         return redirect()->route('admin.articuloRegistros');
     }
 
+    public function etiquetasEliminar(Request $request)
+    {
+        DB::transaction(function () use ($request) {
+            ArticuloEtiqueta::where('etiqueta_id', $request->get('id'))->delete();
+            $etiqueta = Etiqueta::find($request->id)->delete();
+        });
 
-    public function articulosEliminar(Request $request){
-    DB::transaction(function() use($request){
-        ArticuloEtiqueta::where('articulo_id', $request->get('id'))->delete();
-
-        $articulo = Articulo::find($request->get('id'));
-        if ($articulo) {
-            $articulo->delete();
-        }
-    });
-
-    return redirect()->route('admin.articuloRegistros');
-}
-
-
+        return redirect()->route('admin.etiquetasRegistros');
+    }       
 
 }
