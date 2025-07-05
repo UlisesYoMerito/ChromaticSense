@@ -7,11 +7,11 @@
 @section("contenido")
 
 
-<div class="container-fluid my-5">
+<div class="container my-5 ">
 
     <h1 class="display-4 fw-bold">📃 Nuevo registro</h1>
 
-    <form enctype="multipart/form-data" action="{{ route('admin.articuloRegistrar') }}" method="post">
+    <form class="" enctype="multipart/form-data" action="{{ route('admin.articuloRegistrar') }}" method="post">
         <input type="hidden" name="id" value="{{ $articulo?->id }}">
         {{ csrf_field() }}
         <div class="bg-white rounded border shadow p-4">
@@ -57,7 +57,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <label for="contenido" class="text-dark">Contenido</label>
-                    <textarea name="contenido" id="contenido" cols="30" rows="4" class="form-control" //required>{{ $articulo?->contenido }}</textarea>
+                    <textarea class="form-control editor" name="contenido" id="contenido" cols="30" rows="4"  //required>{{ $articulo?->contenido }}</textarea>
                 </div>
             </div>
             <br>

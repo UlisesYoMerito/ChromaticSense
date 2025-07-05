@@ -21,26 +21,26 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('sitio.home')}}">{{ __("sitio.nav_inicio") }}</a>
+            <a class="nav-link active" aria-current="page" href="{{route('sitio.home')}}"><i class="ri-home-fill text-dark"></i> {{ __("sitio.nav_inicio") }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('sitio.todasEtiquetas')}}">{{ __("sitio.nav_etiquetas") }}</a>
+            <a class="nav-link active" aria-current="page" href="{{route('sitio.todasEtiquetas')}}"> <i class="ri-bookmark-fill"></i>{{ __("sitio.nav_etiquetas") }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('sitio.todosArticulos')}}">{{ __("sitio.nav_articulos") }}</a>
+            <a class="nav-link active" aria-current="page" href="{{route('sitio.todosArticulos')}}"><i class="ri-article-fill"></i>{{ __("sitio.nav_articulos") }}</a>
           </li>
         </ul>
 
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <form class="d-flex" role="search">
-              <input class="form-control me-2 w-50" type="search" placeholder="{{ __("sitio.nav_texto_busqueda") }}" aria-label="Search" />
-              <button class="btn btn-light" type="submit">{{ __("sitio.nav_boton_busqueda") }}</button>
+            <form class="d-flex" role="search" action="{{ route('sitio.sistemaBusqueda') }}">
+              <input class="form-control me-2 w-50" name="busqueda" type="search" placeholder="{{ __("sitio.nav_texto_busqueda") }}" aria-label="Search" />
+              <button class="btn btn-light" type="submit"><i class="ri-search-eye-line"></i>{{ __("sitio.nav_boton_busqueda") }}</button>
             </form>
           </li>
           @if(Auth::user())
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ route('admin.logout') }}">Cerrar sesión</a>
+              <a class="nav-link active" aria-current="page" href="{{ route('admin.logout') }}"><i class="ri-logout-box-line"></i> Cerrar sesión</a>
             </li>
             @else
             <li class="nav-item">

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73a908961e670496d915004f0e627929",
+    "content-hash": "aa2919bf0d42ea091606712f2c772243",
     "packages": [
         {
             "name": "archtechx/enums",
@@ -4795,6 +4795,86 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.8"
             },
             "time": "2025-03-16T03:05:19+00:00"
+        },
+        {
+            "name": "rahul900day/laravel-captcha",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RahulDey12/laravel-captcha.git",
+                "reference": "b0009b2cef6c92f7607999fdc52fd6adde18b18b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RahulDey12/laravel-captcha/zipball/b0009b2cef6c92f7607999fdc52fd6adde18b18b",
+                "reference": "b0009b2cef6c92f7607999fdc52fd6adde18b18b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.5",
+                "illuminate/http": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "illuminate/validation": "^10.0|^11.0|^12.0",
+                "illuminate/view": "^10.0|^11.0|^12.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.5.0",
+                "nunomaduro/collision": "^7.0|^8.0",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "pestphp/pest": "^2.0|^3.7",
+                "rector/rector": "^1.0|^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Captcha": "Rahul900day\\Captcha\\Facades\\Captcha"
+                    },
+                    "providers": [
+                        "Rahul900day\\Captcha\\CaptchaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rahul900day\\Captcha\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rahul Dey",
+                    "email": "rahul900day@gmail.com"
+                }
+            ],
+            "description": "Different types of Captcha implementation for Laravel Application.",
+            "homepage": "https://github.com/RahulDey12/laravel-captcha",
+            "keywords": [
+                "laravel",
+                "laravel-captcha",
+                "laravel-hcaptcha",
+                "laravel-recaptcha",
+                "rahul900day"
+            ],
+            "support": {
+                "issues": "https://github.com/RahulDey12/laravel-captcha/issues",
+                "source": "https://github.com/RahulDey12/laravel-captcha/tree/4.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/RahulDey12",
+                    "type": "github"
+                },
+                {
+                    "url": "https://ko-fi.com/rahul900day",
+                    "type": "ko_fi"
+                }
+            ],
+            "time": "2025-03-06T07:00:22+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
