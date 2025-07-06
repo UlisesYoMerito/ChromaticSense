@@ -25,11 +25,14 @@ class Articulo extends Model
     {
         return $this->belongsTo(User::class, "usuario_id", "id");
     }
+    
 
     public function etiquetas(): BelongsToMany
     {
         return $this->belongsToMany(Etiqueta::class, "articulo_etiqueta", "articulo_id", "etiqueta_id");
     }
+
+    
 
     /* 
     
@@ -56,6 +59,8 @@ class Articulo extends Model
     {
         return $query->orderby('created_at');
     }
+
+   
 
 
     /* 

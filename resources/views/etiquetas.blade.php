@@ -3,8 +3,7 @@
 @section("titulo", "Etiqueta")
 
 @section("contenido")
-<h1 class="display-1 fw-bold text-white bg-dark">Artículo</h1>
-
+<h1 class="text-center fw-bold text-white my-4  ">Etiquetas y sus Artículos</h1>
 <div class="container d-flex flex-wrap justify-content-center">
     @forelse ($articulos ?? [] as $a)
     <x-card

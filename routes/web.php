@@ -17,6 +17,7 @@ Route::name("sitio.")->group( function(){
         Route::get("busqueda", "busqueda")->name("sistemaBusqueda");
         Route::get("/articulos","verTodosArticulos")->name("todosArticulos");
         Route::get("/todas-etiquetas", "etiquetasConArticulos")->name("todasEtiquetas");
+        Route::get("/vistas-autor/{usuario_id?}", "vistaPorAutor")->name("vistaPorAutor");
     });
 });
 
@@ -61,14 +62,14 @@ Route::name("admin.")->group( function(){
             /* 
             para acceder a dichas rutas desde la URL o URI es usando 
             El 1er PARAMETRO entre comillas por ejemplo:
-            "/", "publicacion/{id}", "tags/{nombre}", "busqueda". eso es desde el navegador 
+            "/", "publicacion/id}", "tags/nombre}", "busqueda". eso es desde el navegador 
 
             El 2do PARAMETRO es el nombre del método en el controlador SitioController que maneja esa ruta.
             El 3er PARAMETRO es el nombre que se le asigna a esta ruta,
             por ejemplo: "sistemaInicio", "sistemaArticulo", "etiqueta","sistemaBusqueda".
             ->NAME es un método que asigna un nombre a la ruta,
             lo que permite referenciarla fácilmente en otras partes de la aplicación, como en las vistas o en redirecciones. 
-            Ejemplo, < a href="{{ route('sitio.sistemaInicio') }}">Inicio</a> 
+            Ejemplo, < a href=" route('sitio.sistemaInicio') ">Inicio</a> 
             */
 
 /* 

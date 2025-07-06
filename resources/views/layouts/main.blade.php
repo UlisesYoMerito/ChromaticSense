@@ -19,6 +19,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{route('sitio.home')}}"><i class="ri-home-fill text-dark"></i> {{ __("sitio.nav_inicio") }}</a>
@@ -34,22 +35,38 @@
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <form class="d-flex" role="search" action="{{ route('sitio.sistemaBusqueda') }}">
-              <input class="form-control me-2 w-50" name="busqueda" type="search" placeholder="{{ __("sitio.nav_texto_busqueda") }}" aria-label="Search" />
-              <button class="btn btn-light" type="submit"><i class="ri-search-eye-line"></i>{{ __("sitio.nav_boton_busqueda") }}</button>
+
+              <input class="form-control me-2 w-50" name="busqueda" type="search" placeholder="{{ __("sitio.nav_texto_busqueda") }}" aria-label="Search" require />
+
+              <button class="btn btn-light" type="submit"><i class="ri-search-eye-line" require></i>{{ __("sitio.nav_boton_busqueda") }} </button>
             </form>
           </li>
           @if(Auth::user())
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ route('admin.logout') }}"><i class="ri-logout-box-line"></i> Cerrar sesión</a>
-            </li>
-            @else
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ route('admin.login') }}">Iniciar sesión</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ route('admin.registro') }}">Registro</a>
-            </li>
-            @endif
+
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ Auth::user()->nombre }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-lg-end">
+              <li class="nav-item">
+                <a class="nav-link active text-dark" aria-current="page" href="{{ route('admin.adminInicio') }}"> Ir a panel </a>
+              </li>
+              <li class="nav-item">
+
+                <a class="nav-link active text-dark" aria-current="page" href="{{ route('admin.logout') }}"><i class="ri-logout-box-line"></i> Cerrar sesión </a>
+              </li>
+            </ul>
+
+
+          </div>
+          @else
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.login') }}">Iniciar sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.registro') }}">Registro</a>
+          </li>
+          @endif
         </ul>
 
       </div>
@@ -59,6 +76,7 @@
 
   @yield('js')
   @include('sweetalert::alert')
+
 
 </body>
 

@@ -1,4 +1,3 @@
-
 @extends("layouts.main")
 
 
@@ -7,32 +6,33 @@
 
 
 @section("contenido")
+    <h3 class="text-center"> Resultados con la busqueda: <span >{{ request('busqueda') }}</span><h3>
+    <br>
+        <div class="container d-flex flex-wrap justify-content-center">
+            @forelse ($buscandoAndo ?? [] as $a)
+            <x-card
+                autor="{{ $a->usuario->nombre }}"
+                id="{{ $a->id }}"
+                imagen="{{ $a->portada }}"
+                titulo="{{ $a->titulo }}"
+                descripcion="{{ $a->descripcion }}">
+            </x-card>
+            @empty
+            <h3 class="text-center">No hay artículos realcionado con la busqueda <h3>
+                    @endforelse
+        </div>
+        <div class="container d-flex justify-content-center mt-5">
+            {{ $buscandoAndo->appends(['busqueda' => request('busqueda')])->links('pagination::bootstrap-5') }}
 
- <div class="container d-flex flex-wrap justify-content-center">
-    @forelse ($buscandoAndo ?? [] as $a)
-    <x-card
-        autor="{{ $a->usuario->nombre }}"
-        id="{{ $a->id }}"
-        imagen="{{ $a->portada }}"
-        titulo="{{ $a->titulo }}"
-        descripcion="{{ $a->descripcion }}">
-    </x-card>
-    @empty  
-    <h1 class="text-center">No hay artículos con esta etiqueta</h1>
-    @endforelse
-</div>
-<div class="container d-flex justify-content-center mt-5">
-    {{ $buscandoAndo->links() }}
-
-</div>
-
-    
-
-
-@endsection
+        </div>
 
 
-<!-- 
+
+
+        @endsection
+
+
+        <!-- 
 
     el extends("layouts.main") indica que este archivo hereda de main.blade.php
     

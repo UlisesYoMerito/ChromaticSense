@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Articulo;
 use App\Models\Etiqueta;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SitioController extends Controller
 {
-    public function inicio()  /* A este llamamos desde web.php "/" */
+    public function inicio()
     {
-        
         return view('inicio', [
             "etiquetas" => Etiqueta::all(),
             "articulos" => Articulo::ordernarPorFecha()->get()
@@ -41,16 +41,17 @@ class SitioController extends Controller
     */
 
 
-    public function verArticulosDeEtiqueta($nombre){
+    public function verArticulosDeEtiqueta($nombre)
+    {
         $registros = Etiqueta::nombre($nombre)->first()?->articulos;
-        
+
 
         return view('etiquetas', [
             "articulos" => $registros
         ]);
     }
 
-        /* 
+    /* 
             agregamos como parametro la variable $nombre que representa el nombre de la etiqueta que se busca.
             guardamos en $registros el resultado de la consulta a la base de datos usando el modelo Etiqueta,
 
@@ -64,32 +65,46 @@ class SitioController extends Controller
         
         */
 
-    public function busqueda(){
+    public function busqueda()
+    {
 
-            
+
         return view('busqueda', [
-            "buscandoAndo"=> Articulo::where('titulo', 'like', '%'.request('busqueda').'%')->paginate(2)
+            "buscandoAndo" => Articulo::where('titulo', 'like', '%' . request('busqueda') . '%')->paginate(2)
         ]);
     }
 
 
-    public function verTodosArticulos(){
+    public function verTodosArticulos()
+    {
         return view('verTodosArticulos', [
             "articulos" => Articulo::all()
         ]);
     }
 
-    public function etiquetasConArticulos() {
+    public function etiquetasConArticulos()
+    {
         $etiquetas = Etiqueta::with('articulos')->get();
         return view('todasEtiquetas', [
             'etiquetas' => $etiquetas
         ]);
     }
 
+
+
+
+
+    public function vistaPorAutor()
+    {
+        $autor = Articulo::all();
+        return view('vistaPorAutor', [
+            'autor' => $autor
+        ]);
+    }
+
+
     public function iniciarSesion()
     {
         return view('admin.login');
     }
-
 }
-
