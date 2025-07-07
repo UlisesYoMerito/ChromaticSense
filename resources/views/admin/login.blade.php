@@ -21,6 +21,10 @@
                 <br>
                 <label for="contrasena" class="text-light">Contraseña:</label>
                 <input type="password" name="contrasena" id="contrasena" class="form-control form-control-lg">
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <br> 
+                    <a href="{{route('sitio.obtenerDatos')}}" class="text-light">Recuperar contraseña</a>
+                </div>
                 <button class="boton-inicioSesion btn btn-lg w-50 mt-4 d-block mx-auto">Entrar</button>
             </form>
         </div>

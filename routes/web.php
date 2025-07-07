@@ -18,12 +18,16 @@ Route::name("sitio.")->group(function () {
         Route::get("/articulos", "verTodosArticulos")->name("todosArticulos");
         Route::get("/todas-etiquetas", "etiquetasConArticulos")->name("todasEtiquetas");
         Route::get("/vistas-autor/{usuario_id?}", "vistaPorAutor")->name("vistaPorAutor");
-
         // Mostrar el formulario (GET)
         Route::get("ActualizarContrasena", "formularioContrasena")->name("formularioContrasena");
 
         // Procesar el formulario (POST)
         Route::post("ActualizarContrasena", "ActualizarContrasena")->name("ActualizarContrasena");
+
+        Route::get('/recuperar-contrasena', 'obtenerDatos')->name('obtenerDatos');
+        Route::post('/recuperar-contrasena', 'enviarComprobacion')->name('enviarComprobacion');
+        Route::post('/actualizar-contrasena', 'nuevaContrasena')->name('nuevaContrasena');
+
     });
 });
 
@@ -61,8 +65,3 @@ Route::name("admin.")->group(function () {
 
 
 
-Route::middleware('auth')->prefix('admin')->group(function () {
-    Route::get('cambio-contrasena', [AdministradorController::class, 'cambioContrasena'])->name('cambioContrasena');
-    Route::post('enviar-codigo', [AdministradorController::class, 'enviarCodigo'])->name('enviarCodigo');
-    Route::post('actualizar-contrasena', [AdministradorController::class, 'actualizarContrasena'])->name('actualizarContrasena');
-});

@@ -44,9 +44,9 @@
           @if(Auth::user())
 
 
-            <div class="dropdown btn-lg position-relative">
+            <div class="btn-lg position-relative">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->nombre }}</button>
-              <ul class="dropdown-menu ">
+              <ul class="dropdown-menu  dropdown-menu-lg-end  ">
                 <li><a class="dropdown-item" href="{{route('admin.adminInicio')}}">Ir a panel</a></li>
                 <li><a class="dropdown-item" href="{{route('sitio.formularioContrasena')}}">Cambio Contraseña</a></li>
                 <li><a class="dropdown-item" href="{{route('admin.logout') }}">Cerrar sesión</a></li>

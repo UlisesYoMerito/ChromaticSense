@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-lg-4">
                     <label for="contrasenaActual">Contraseña Actual</label>
-                    <input type="password" name="contrasenaActual" class="form-control form-control-lg" value="" required>
+                    <input type="password" name="contrasenaActual" class="form-control form-control-lg" required>
                 </div>
                 <div class="col-lg-4">
                     <label for="contrasenaNueva">Nueva Contraseña</label>

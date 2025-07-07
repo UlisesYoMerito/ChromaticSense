@@ -117,15 +117,15 @@ class SitioController extends Controller
         $request->validate([
             'correo' => 'required|email',
             'contrasenaActual' => 'required',
-            'contrasenaNueva' => 'required',  
+            'contrasenaNueva' => 'required',
         ]);
 
 
         if (Auth::attempt(["email" => $request->get('correo'), "password" => $request->get('contrasenaActual')])) {
             $user = User::where('email', $request->get('correo'))->first();
-            $user->password =$request->contrasenaNueva;
+            $user->password = $request->contrasenaNueva;
             $user->save();
-        
+
 
 
             alert()->success('Contraseña Actualizada');
@@ -134,5 +134,37 @@ class SitioController extends Controller
             alert()->error('Algo ha salido mal', 'Tus datos de acceso no coinciden');
             return redirect()->route("sitio.ActualizarContrasena");
         }
+    }
+
+
+    public function obtenerDatos()
+    {
+        return view("pedirCorreo"); // Esta vista la modificaremos después
+    }
+
+    public function enviarComprobacion(Request $request)
+    {
+        $user = User::where('email', $request->get('correo'))->first();
+
+        if ($user) {
+            alert()->success('Agrega la nueva contraseña');
+            return view("ingresarContraseñaNueva", ['email' => $request->get('correo')]);
+        }
+        alert()->error('El correo no existe');
+        return view('pedirCorreo');
+    }
+
+
+
+    public function nuevaContrasena(Request $request)
+    {
+      
+
+        $user = User::where('email', $request->get('correo'))->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        alert()->success('Contraseña actualizada exitosamente');
+        return redirect()->route('sitio.home');
     }
 }
