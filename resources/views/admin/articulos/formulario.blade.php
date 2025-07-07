@@ -18,11 +18,11 @@
             <div class="row">
                 <div class="col-lg-8">
                     <label for="titulo" class="text-dark">Título del artículo</label>
-                    <input type="text" class="form-control" name="titulo" id="titulo" //required value="{{ $articulo?->titulo }}">
+                    <input type="text" class="form-control" name="titulo" id="titulo" required value="{{ $articulo?->titulo }}">
                 </div>
                 <div class="col-lg-4">
                     <label for="fecha" class="text-dark">Fecha</label>
-                    <input type="datetime-local" class="form-control" name="fecha" id="fecha" //required value="{{ $articulo?->fecha_visualizacion }}">
+                    <input type="datetime-local" class="form-control" name="fecha" id="fecha" required value="{{ $articulo?->fecha_visualizacion }}">
                 </div>
             </div>
             <br>
@@ -43,21 +43,21 @@
             <div class="row">
                 <div class="col-lg-12">
                     <label for="portada" class="text-dark">URL de la portada</label>
-                    <input type="file" class="form-control" accept=".jpg, .png, " name="portadas" id="portada" //required  value="{{ $articulo?->portada }}">
+                    <input type="file" class="form-control" accept=".jpg, .png, " name="portadas" id="portada" required  value="{{ $articulo?->portada }}">
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-lg-12">
                     <label for="descripcion" class="text-dark">Descripción</label>
-                    <textarea name="descripcion" id="descripcion" cols="30" rows="2" class="form-control" //required>{{ $articulo?->descripcion }}</textarea>
+                    <textarea name="descripcion" id="descripcion" cols="30" rows="2" class="form-control" required>{{ $articulo?->descripcion }}</textarea>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-lg-12">
                     <label for="contenido" class="text-dark">Contenido</label>
-                    <textarea class="form-control editor" name="contenido" id="contenido" cols="30" rows="4"  //required>{{ $articulo?->contenido }}</textarea>
+                    <textarea class="form-control editor" name="contenido" id="contenido" cols="30" rows="4"  required>{{ $articulo?->contenido }}</textarea>
                 </div>
             </div>
             <br>

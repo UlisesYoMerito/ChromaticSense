@@ -4,7 +4,8 @@
 
 @section("contenido")
 
-<h1>Artículos de {{ $autor }}</h1>
->
+<h1>Artículos de</h1>
+
+@foreach()
 
 @endsection

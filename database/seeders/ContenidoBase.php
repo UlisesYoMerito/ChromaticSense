@@ -39,7 +39,7 @@ class ContenidoBase extends Seeder
         DB::table('usuarios')->insert([
             'nombre' => "Ulises",
             'email' => "Ulises@live.com",
-            'password' => Hash ::make ( "PollitoUlises"),
+            'password' => Hash ::make ( "123"),
         ]);
         DB::table('usuarios')->insert([
             'nombre' => "Armando",

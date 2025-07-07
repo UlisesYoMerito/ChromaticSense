@@ -6,7 +6,9 @@ use App\Models\Articulo;
 use App\Models\Etiqueta;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SitioController extends Controller
 {
@@ -90,10 +92,6 @@ class SitioController extends Controller
         ]);
     }
 
-
-
-
-
     public function vistaPorAutor()
     {
         $autor = Articulo::all();
@@ -106,5 +104,35 @@ class SitioController extends Controller
     public function iniciarSesion()
     {
         return view('admin.login');
+    }
+
+    public function formularioContrasena()
+    {
+        return view('actualizarContrasena');
+    }
+
+
+    public function ActualizarContrasena(Request $request)
+    {
+        $request->validate([
+            'correo' => 'required|email',
+            'contrasenaActual' => 'required',
+            'contrasenaNueva' => 'required',  
+        ]);
+
+
+        if (Auth::attempt(["email" => $request->get('correo'), "password" => $request->get('contrasenaActual')])) {
+            $user = User::where('email', $request->get('correo'))->first();
+            $user->password =$request->contrasenaNueva;
+            $user->save();
+        
+
+
+            alert()->success('Contraseña Actualizada');
+            return redirect()->route("sitio.home");
+        } else {
+            alert()->error('Algo ha salido mal', 'Tus datos de acceso no coinciden');
+            return redirect()->route("sitio.ActualizarContrasena");
+        }
     }
 }

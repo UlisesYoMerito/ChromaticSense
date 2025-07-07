@@ -43,22 +43,16 @@
           </li>
           @if(Auth::user())
 
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ Auth::user()->nombre }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-lg-end">
-              <li class="nav-item">
-                <a class="nav-link active text-dark" aria-current="page" href="{{ route('admin.adminInicio') }}"> Ir a panel </a>
-              </li>
-              <li class="nav-item">
 
-                <a class="nav-link active text-dark" aria-current="page" href="{{ route('admin.logout') }}"><i class="ri-logout-box-line"></i> Cerrar sesión </a>
-              </li>
-            </ul>
+            <div class="dropdown btn-lg position-relative">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->nombre }}</button>
+              <ul class="dropdown-menu ">
+                <li><a class="dropdown-item" href="{{route('admin.adminInicio')}}">Ir a panel</a></li>
+                <li><a class="dropdown-item" href="{{route('sitio.formularioContrasena')}}">Cambio Contraseña</a></li>
+                <li><a class="dropdown-item" href="{{route('admin.logout') }}">Cerrar sesión</a></li>
+              </ul>
+            </div>
 
-
-          </div>
           @else
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{ route('admin.login') }}">Iniciar sesión</a>

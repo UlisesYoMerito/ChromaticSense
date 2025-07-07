@@ -8,6 +8,7 @@ use App\Models\ArticuloEtiqueta;
 use App\Models\Etiqueta;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -111,10 +112,12 @@ class AdministradorController extends Controller
             "etiqueta" => Etiqueta::find($id)
         ]);
     }
+    
     public function articulosRegistrar(Request $request)
     {
         DB::transaction(function () use ($request) {
             $ruta = Storage::disk('public')->putFile('portadas', $request->file('portada'));
+            
             $articulo = Articulo::firstOrNew(["id" => $request->get('id')]);
             $articulo->titulo = $request->get('titulo');
             $articulo->portada = "/$ruta";
@@ -140,7 +143,8 @@ class AdministradorController extends Controller
         return redirect()->route('admin.articuloRegistros');
     }
 
-    public function etiquetasRegistrar(Request $request) {
+    public function etiquetasRegistrar(Request $request)
+    {
         DB::transaction(function () use ($request) {
             $etiqueta = Etiqueta::firstOrNew(["id" => $request->get('id')]);
             $etiqueta->nombre = $request->get('nombre');
@@ -174,6 +178,11 @@ class AdministradorController extends Controller
         });
 
         return redirect()->route('admin.etiquetasRegistros');
-    }       
+    }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function cambioContrasena()
+    {
+        return view("cambioContrasena");
+    }
 }

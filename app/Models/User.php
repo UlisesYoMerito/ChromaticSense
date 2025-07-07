@@ -12,7 +12,7 @@ class User extends Authenticatable
 
     protected $table = "usuarios";
 
-    
+
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -23,9 +23,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nombre',  // Cambiado de 'name' a 'nombre'
         'email',
         'password',
+        'codigo_verificacion',
+        'codigo_expira_en',
     ];
 
     /**
@@ -43,19 +45,17 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+    'email_verified_at' => 'datetime',
+    'codigo_expira_en' => 'datetime',  // Añade esta línea para que Carbon funcione bien
+    'password' => 'hashed',
+];
 
+    /**
+     * Relación uno a muchos con el modelo Articulo.
+     */
     public function articulos()
     {
         return $this->hasMany(Articulo::class, 'usuario_id');
     }
-
-
-    
 }
