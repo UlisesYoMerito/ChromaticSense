@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Articulo;
-use App\Models\Etiqueta;
+use App\Models\Categoria;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,17 +15,16 @@ class SitioController extends Controller
     public function inicio()
     {
         return view('inicio', [
-            "etiquetas" => Etiqueta::all(),
+            "categoria" => Categoria::all(),
             "articulos" => Articulo::ordernarPorFecha()->get()
         ]);
     }
 
-    /*              
-            creamos una variable llamada "etiquetas" a la cual le asignamos el resultado de la consulta a la base de datos
-            usando el modelo Etiqueta, que representa la tabla "etiquetas" en la base de datos.
+    /*
+        creamos una variable llamada "categorias" a la cual le asignamos el resultado de la consulta a la base de datos
+        usando el modelo Categoria, que representa la tabla "categorias" en la base de datos.
 
-            para "articulos " hacemos lo mismo, pero ordenamos los artículos por fecha usando el método "ordernarPorFecha()"
-            
+        para "articulos " hacemos lo mismo, pero ordenamos los artículos por fecha usando el método "ordernarPorFecha()"
     */
 
     public function verArticulo($id)
@@ -35,60 +34,51 @@ class SitioController extends Controller
         ]);
     }
 
-    /* 
+    /*
         creamos una variable llamada "registro" a la cual le asignamos el resultado de la consulta a la base de datos
         usando el modelo Articulo, que representa la tabla "articulos" en la base de datos.
         find($id) busca un artículo por su ID.
-
     */
 
-
-    public function verArticulosDeEtiqueta($nombre)
+    public function verArticulosDeCategoria($nombre)
     {
-        $registros = Etiqueta::nombre($nombre)->first()?->articulos;
+        $registros = Categoria::nombre($nombre)->first()?->articulos;
+        $categorias = Categoria::with('articulos')->get();
+        $categoria = Categoria::where('nombre', $nombre)->first();
+        
+        return view('categoria', [
+            "articulos" => $registros,
+            'categorias' => $categorias,
+            "categoriaActual" => $categoria
 
-
-        return view('etiquetas', [
-            "articulos" => $registros
         ]);
     }
 
-    /* 
-            agregamos como parametro la variable $nombre que representa el nombre de la etiqueta que se busca.
-            guardamos en $registros el resultado de la consulta a la base de datos usando el modelo Etiqueta,
-
-            La función view() en Laravel se usa así:
-                Rrturn view/('nombre_de_la_vista', [
-                    'clave' => 'valor',
-                ]);
-
-                por lo tanto guardamos en registro el los datos de la etiqueta que se busca,
-
-        
-        */
+    /*
+        agregamos como parámetro la variable $nombre que representa el nombre de la categoría que se busca.
+        guardamos en $registros el resultado de la consulta a la base de datos usando el modelo Categoria,
+    */
 
     public function busqueda()
     {
-
-
         return view('busqueda', [
-            "buscandoAndo" => Articulo::where('titulo', 'like', '%' . request('busqueda') . '%')->paginate(2)
+            "buscandoAndo" => Articulo::where('titulo', 'like', '%' . request('busqueda') . '%')->paginate(5)
         ]);
     }
-
 
     public function verTodosArticulos()
     {
         return view('verTodosArticulos', [
-            "articulos" => Articulo::all()
+            "articulos" => Articulo::all(),
+            "categorias" => Categoria::all(),
         ]);
     }
 
-    public function etiquetasConArticulos()
+    public function categoriasConArticulos()
     {
-        $etiquetas = Etiqueta::with('articulos')->get();
-        return view('todasEtiquetas', [
-            'etiquetas' => $etiquetas
+        $categorias = Categoria::with('articulos')->get();
+        return view('todasCategorias', [
+            'categorias' => $categorias
         ]);
     }
 
@@ -100,7 +90,6 @@ class SitioController extends Controller
         ]);
     }
 
-
     public function iniciarSesion()
     {
         return view('admin.login');
@@ -111,7 +100,6 @@ class SitioController extends Controller
         return view('actualizarContrasena');
     }
 
-
     public function ActualizarContrasena(Request $request)
     {
         $request->validate([
@@ -120,13 +108,10 @@ class SitioController extends Controller
             'contrasenaNueva' => 'required',
         ]);
 
-
         if (Auth::attempt(["email" => $request->get('correo'), "password" => $request->get('contrasenaActual')])) {
             $user = User::where('email', $request->get('correo'))->first();
             $user->password = $request->contrasenaNueva;
             $user->save();
-
-
 
             alert()->success('Contraseña Actualizada');
             return redirect()->route("sitio.home");
@@ -136,10 +121,9 @@ class SitioController extends Controller
         }
     }
 
-
     public function obtenerDatos()
     {
-        return view("pedirCorreo"); // Esta vista la modificaremos después
+        return view("pedirCorreo");
     }
 
     public function enviarComprobacion(Request $request)
@@ -150,16 +134,13 @@ class SitioController extends Controller
             alert()->success('Agrega la nueva contraseña');
             return view("ingresarContraseñaNueva", ['email' => $request->get('correo')]);
         }
+
         alert()->error('El correo no existe');
         return view('pedirCorreo');
     }
 
-
-
     public function nuevaContrasena(Request $request)
     {
-      
-
         $user = User::where('email', $request->get('correo'))->first();
         $user->password = Hash::make($request->password);
         $user->save();

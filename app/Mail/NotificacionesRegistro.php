@@ -31,7 +31,7 @@ class NotificacionesRegistro extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Te has registrado en Blogy',
+            subject: 'Te has registrado en Chromatic',
         );
     }
 

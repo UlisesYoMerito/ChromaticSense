@@ -6,9 +6,10 @@
 
 
 @section("contenido")
-    <h3 class="text-center"> Resultados con la busqueda: <span >{{ request('busqueda') }}</span><h3>
+    
+    <h3 class="text-center text-light"> Resultados con la busqueda: <span >{{ request('busqueda') }}</span><h3>
     <br>
-        <div class="container d-flex flex-wrap justify-content-center">
+        <div class="container-fluid d-flex flex-wrap justify-content-center">
             @forelse ($buscandoAndo ?? [] as $a)
             <x-card
                 autor="{{ $a->usuario->nombre }}"

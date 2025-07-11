@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 255);
@@ -34,17 +33,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('etiquetas', function (Blueprint $table) {
+        Schema::create('categorias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 255);
+            $table->string('portada_categoria', 400)->nullable();
             $table->timestamps();
         });
 
-        Schema::create('articulo_etiqueta', function (Blueprint $table) {
-            $table->foreignId('etiqueta_id')->constrained('etiquetas')->onDelete('cascade');
+        Schema::create('articulo_categoria', function (Blueprint $table) {
+            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
             $table->foreignId('articulo_id')->constrained('articulos')->onDelete('cascade');
             $table->timestamps();
-            $table->primary(['etiqueta_id', 'articulo_id']);
+            $table->primary(['categoria_id', 'articulo_id']);
         });
     }
 
@@ -53,9 +53,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::drop('flights');
-        Schema::dropIfExists('articulo_etiqueta');
-        Schema::dropIfExists('etiquetas');
+        Schema::dropIfExists('articulo_categoria');
+        Schema::dropIfExists('categorias');
         Schema::dropIfExists('articulos');
         Schema::dropIfExists('usuarios');
     }

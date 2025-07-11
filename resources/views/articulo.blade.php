@@ -8,10 +8,9 @@
 @section("contenido")
 <div class=" container mt-5">
     <div class="row align-items center">
-        <div class="col md-6">
-            <img src="{{$registro->portada}}" class="img-fluid rounded" alt="">
-        </div>
-        <div class=" col md-6">
+        <div class="col-md-6">
+       </div>
+        <div class=" col-md-6">
             <div class="container-articulos p-4 rounded  ">
                 <h1 class="display-4 ">{{ $registro->titulo }}</h1>
                 <p>{{ $registro->descripcion }}</p>
@@ -20,6 +19,8 @@
         </div>
     </div>
 </div>
+
+
 @endsection
 
 

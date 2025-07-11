@@ -27,9 +27,9 @@ class Articulo extends Model
     }
     
 
-    public function etiquetas(): BelongsToMany
+    public function categorias(): BelongsToMany
     {
-        return $this->belongsToMany(Etiqueta::class, "articulo_etiqueta", "articulo_id", "etiqueta_id");
+        return $this->belongsToMany(Categoria::class, "articulo_categoria", "articulo_id", "categoria_id");
     }
 
     

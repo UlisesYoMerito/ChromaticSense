@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Mail\NotificacionesRegistro;
 use App\Models\Articulo;
-use App\Models\ArticuloEtiqueta;
-use App\Models\Etiqueta;
+use App\Models\ArticuloCategoria;
+use App\Models\Categoria;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -22,6 +22,7 @@ class AdministradorController extends Controller
     {
         return view('admin.login');
     }
+
     public function entrar(Request $request)
     {
         if (Auth::attempt(["email" => $request->get('correo'), "password" => $request->get('contrasena')])) {
@@ -32,6 +33,7 @@ class AdministradorController extends Controller
             return redirect()->route("admin.login");
         }
     }
+
     public function cerrarSesion()
     {
         Auth::logout();
@@ -44,9 +46,9 @@ class AdministradorController extends Controller
     {
         return view('admin.registro');
     }
+
     public function registrar(Request $request)
     {
-
         $request->validate(
             [
                 'nombre' => 'required|string|max:20',
@@ -76,7 +78,7 @@ class AdministradorController extends Controller
     {
         return view('admin.inicio', [
             "articulos" => Articulo::count(),
-            "etiquetas" => Etiqueta::count()
+            "categorias" => Categoria::count()
         ]);
     }
 
@@ -87,37 +89,33 @@ class AdministradorController extends Controller
         ]);
     }
 
-
-    public function etiquetasRegistros()
+    public function categoriasRegistros()
     {
-        return view("admin.etiquetas.registros", [
-            "registrosEtiquetas" => Etiqueta::all()
+        return view("admin.categorias.registros", [
+            "registrosCategorias" => Categoria::all()
         ]);
     }
 
     public function articulosFormulario($id = null)
     {
         return view("admin.articulos.formulario", [
-            "etiquetas" => Etiqueta::all(),
-            "articulo" => Articulo::with("etiquetas")->find($id)
+            "categorias" => Categoria::all(),
+            "articulo" => Articulo::with("categorias")->find($id)
         ]);
     }
 
-
-
-
-    public function etiquetasFormulario($id = null)
+    public function categoriasFormulario($id = null)
     {
-        return view("admin.etiquetas.formulario", [
-            "etiqueta" => Etiqueta::find($id)
+        return view("admin.categorias.formulario", [
+            "categoria" => Categoria::find($id)
         ]);
     }
-    
+
     public function articulosRegistrar(Request $request)
     {
         DB::transaction(function () use ($request) {
             $ruta = Storage::disk('public')->putFile('portadas', $request->file('portada'));
-            
+
             $articulo = Articulo::firstOrNew(["id" => $request->get('id')]);
             $articulo->titulo = $request->get('titulo');
             $articulo->portada = "/$ruta";
@@ -126,40 +124,41 @@ class AdministradorController extends Controller
             $articulo->fecha_visualizacion = $request->get('fecha');
             $articulo->usuario_id = Auth::id();
             $articulo->save();
-            // Eliminar etiquetas antiguas
-            ArticuloEtiqueta::where('articulo_id', $articulo->id)
-                ->whereNotIn('etiqueta_id', $request->get('etiqueta'))
+
+            // Eliminar categorías antiguas
+            ArticuloCategoria::where('articulo_id', $articulo->id)
+                ->whereNotIn('categoria_id', $request->get('categoria'))
                 ->delete();
-            foreach ($request->get('etiqueta') as $e) {
-                $etiqueta = ArticuloEtiqueta::firstOrNew([
+
+            foreach ($request->get('categoria') as $c) {
+                $categoria = ArticuloCategoria::firstOrNew([
                     'articulo_id' => $articulo->id,
-                    'etiqueta_id' => $e
+                    'categoria_id' => $c
                 ]);
-                $etiqueta->articulo_id = $articulo->id;
-                $etiqueta->etiqueta_id = $e;
-                $etiqueta->save();
+                $categoria->articulo_id = $articulo->id;
+                $categoria->categoria_id = $c;
+                $categoria->save();
             }
         });
+
         return redirect()->route('admin.articuloRegistros');
     }
 
-    public function etiquetasRegistrar(Request $request)
+    public function categoriasRegistrar(Request $request)
     {
         DB::transaction(function () use ($request) {
-            $etiqueta = Etiqueta::firstOrNew(["id" => $request->get('id')]);
-            $etiqueta->nombre = $request->get('nombre');
-            $etiqueta->save();
+            $categoria = Categoria::firstOrNew(["id" => $request->get('id')]);
+            $categoria->nombre = $request->get('nombre');
+            $categoria->save();
         });
-        return redirect()->route('admin.etiquetasRegistros');
+
+        return redirect()->route('admin.categoriasRegistros');
     }
-
-
-
 
     public function articulosEliminar(Request $request)
     {
         DB::transaction(function () use ($request) {
-            ArticuloEtiqueta::where('articulo_id', $request->get('id'))->delete();
+            ArticuloCategoria::where('articulo_id', $request->get('id'))->delete();
 
             $articulo = Articulo::find($request->get('id'));
             if ($articulo) {
@@ -170,17 +169,16 @@ class AdministradorController extends Controller
         return redirect()->route('admin.articuloRegistros');
     }
 
-    public function etiquetasEliminar(Request $request)
+    public function categoriasEliminar(Request $request)
     {
         DB::transaction(function () use ($request) {
-            ArticuloEtiqueta::where('etiqueta_id', $request->get('id'))->delete();
-            $etiqueta = Etiqueta::find($request->id)->delete();
+            ArticuloCategoria::where('categoria_id', $request->get('id'))->delete();
+            $categoria = Categoria::find($request->id)->delete();
         });
 
-        return redirect()->route('admin.etiquetasRegistros');
+        return redirect()->route('admin.categoriasRegistros');
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function cambioContrasena()
     {
         return view("cambioContrasena");
