@@ -19,19 +19,27 @@
 <div class="container-fluid">
   <div id="lightgallery" class="row grid"
        data-masonry='{"itemSelector": ".grid-item", "columnWidth": ".grid-sizer", "percentPosition": true }'>
+
     <div class="grid-sizer col-12 col-sm-6 col-md-3"></div>
 
     @forelse ($articulos ?? [] as $articulo)
-      @component('components.card', ['articulo' => $articulo]) @endcomponent
+      <a href="{{ asset('storage/' . $articulo->portada) }}"
+         class="grid-item col-12 col-sm-6 col-md-3 mb-4"
+         data-lg-size="1200-800"
+         title="{{ $articulo->titulo }}">
+
+        <img src="{{ asset('storage/' . $articulo->portada) }}"
+             class="img-fluid rounded imagen-miniatura"
+             alt="{{ $articulo->titulo }}">
+      </a>
     @empty  
       <div class="col-12 text-center text-light py-5">
-          <h3>No hay artículos disponibles</h3>
+        <h3>No hay artículos disponibles</h3>
       </div>
     @endforelse
   </div>
 </div>
-
-
-
 @endsection
+
+
 
